@@ -1,0 +1,545 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="broadlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="http://eclipse.org/smarthome/schemas/thing-description/v1.0.0"
+	xsi:schemaLocation="http://eclipse.org/smarthome/schemas/thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/thing-description-1.0.0.xsd">
+
+	<!-- Sample Thing Type -->
+
+	<thing-type id="sp1">
+		<label>Broadlink SP1</label>
+		<description>The Broadlink SP1 is a smart socket with Wi-Fi connectivity.</description>
+		<channels>
+			<channel id="powerOn" typeId="powerOn" />
+		</channels>
+		<config-description>
+			<parameter name="ipAddress" type="text">
+				<context>network-address</context>
+				<label>Network Address</label>
+				<description>Network address of the device.</description>
+				<required>true</required>
+				<advanced>true</advanced>
+			</parameter>
+			<parameter name="port" type="integer">
+				<context>network-port</context>
+				<label>Network Port</label>
+				<description>Network port of the device.</description>
+				<required>true</required>
+				<advanced>true</advanced>
+			</parameter>
+			<parameter name="mac" type="text">
+				<context>mac-address</context>
+				<label>MAC Address</label>
+				<description>MAC address of the device.</description>
+				<required>true</required>
+				<advanced>true</advanced>
+			</parameter>
+			<parameter name="authorizationKey" type="text">
+				<context>password</context>
+				<label>Authentication Key</label>
+				<description>Authentication key of the device.</description>
+				<required>true</required>
+			</parameter>
+			<parameter name="iv" type="text">
+				<context>password</context>
+				<label>IV</label>
+				<description>Initialization vector</description>
+				<required>true</required>
+			</parameter>
+		</config-description>
+	</thing-type>
+	<thing-type id="sp2">
+		<label>Broadlink SP2</label>
+		<description>The Broadlink SP2 is a smart socket with Wi-Fi connectivity.</description>
+		<channels>
+			<channel id="powerOn" typeId="powerOn" />
+			<channel id="powerConsumption" typeId="powerConsumption" />
+		</channels>
+		<config-description>
+			<parameter name="ipAddress" type="text">
+				<context>network-address</context>
+				<label>Network Address</label>
+				<description>Network address of the device.</description>
+				<required>true</required>
+				<advanced>true</advanced>
+			</parameter>
+			<parameter name="port" type="integer">
+				<context>network-port</context>
+				<label>Network Port</label>
+				<description>Network port of the device.</description>
+				<required>true</required>
+				<advanced>true</advanced>
+			</parameter>
+			<parameter name="mac" type="text">
+				<context>mac-address</context>
+				<label>MAC Address</label>
+				<description>MAC address of the device.</description>
+				<required>true</required>
+				<advanced>true</advanced>
+			</parameter>
+			<parameter name="pollingInterval" type="integer" min="30" step="1">
+				<label>Polling Interval</label>
+				<description>The interval in seconds for polling the status of the device.</description>
+				<required>true</required>
+				<default>30</default>
+			</parameter>
+			<parameter name="authorizationKey" type="text">
+				<context>password</context>
+				<label>Authentication Key</label>
+				<description>Authentication key of the device.</description>
+				<required>true</required>
+			</parameter>
+			<parameter name="iv" type="text">
+				<context>password</context>
+				<label>IV</label>
+				<description>Initialization Vector</description>
+				<required>true</required>
+			</parameter>
+		</config-description>
+	</thing-type>
+	<thing-type id="sp3">
+		<label>Broadlink SP3</label>
+		<description>The Broadlink SP3 is a smart socket with night light and Wi-Fi connectivity.</description>
+		<channels>
+			<channel id="powerOn" typeId="powerOn" />
+			<channel id="powerConsumption" typeId="powerConsumption" />
+		</channels>
+		<config-description>
+			<parameter name="ipAddress" type="text">
+				<context>network-address</context>
+				<label>Network Address</label>
+				<description>Network address of the device.</description>
+				<required>true</required>
+				<advanced>true</advanced>
+			</parameter>
+			<parameter name="port" type="integer">
+				<context>network-port</context>
+				<label>Network Port</label>
+				<description>Network port of the device.</description>
+				<required>true</required>
+				<advanced>true</advanced>
+			</parameter>
+			<parameter name="mac" type="text">
+				<context>mac-address</context>
+				<label>MAC Address</label>
+				<description>MAC address of the device.</description>
+				<required>true</required>
+				<advanced>true</advanced>
+			</parameter>
+			<parameter name="pollingInterval" type="integer" min="30" step="1">
+				<label>Polling Interval</label>
+				<description>The interval in seconds for polling the status of the device.</description>
+				<required>true</required>
+				<default>30</default>
+			</parameter>
+			<parameter name="authorizationKey" type="text">
+				<context>password</context>
+				<label>Authentication Key</label>
+				<description>Authentication key of the device.</description>
+				<required>true</required>
+			</parameter>
+			<parameter name="iv" type="text">
+				<context>password</context>
+				<label>IV</label>
+				<description>Initialization Vector</description>
+				<required>true</required>
+			</parameter>
+		</config-description>
+	</thing-type>
+	<thing-type id="mp1">
+		<label>Broadlink MP1</label>
+		<description>The Broadlink MP1 Smart Home Wifi Plug Power Strip 4 Ports Individual Wireless Remote Control.</description>
+		<channels>
+			<channel id="s1powerOn" typeId="s1powerOn" />
+			<channel id="s2powerOn" typeId="s2powerOn" />
+			<channel id="s3powerOn" typeId="s3powerOn" />
+			<channel id="s4powerOn" typeId="s4powerOn" />
+		</channels>
+		<config-description>
+			<parameter name="ipAddress" type="text">
+				<context>network-address</context>
+				<label>Network Address</label>
+				<description>Network address of the device.</description>
+				<required>true</required>
+				<advanced>true</advanced>
+			</parameter>
+			<parameter name="port" type="integer">
+				<context>network-port</context>
+				<label>Network Port</label>
+				<description>Network port of the device.</description>
+				<required>true</required>
+				<advanced>true</advanced>
+			</parameter>
+			<parameter name="mac" type="text">
+				<context>mac-address</context>
+				<label>MAC Address</label>
+				<description>MAC address of the device.</description>
+				<required>true</required>
+				<advanced>true</advanced>
+			</parameter>
+			<parameter name="pollingInterval" type="integer" min="30" step="1">
+				<label>Polling Interval</label>
+				<description>The interval in seconds for polling the status of the device.</description>
+				<required>true</required>
+				<default>30</default>
+			</parameter>
+			<parameter name="authorizationKey" type="text">
+				<context>password</context>
+				<label>Authentication Key</label>
+				<description>Authentication key of the device.</description>
+				<required>true</required>
+
+			</parameter>
+			<parameter name="iv" type="text">
+				<context>password</context>
+				<label>IV</label>
+				<description>Initialization Vector</description>
+				<required>false</required>
+			</parameter>
+		</config-description>
+	</thing-type>
+	<thing-type id="mp2">
+		<label>Broadlink MP2</label>
+		<description>The Broadlink MP2 is a smart socket with Wi-Fi connectivity. It does not support switching by individual ports.</description>
+		<channels>
+			<channel id="powerOn" typeId="powerOn" />
+			<channel id="powerConsumption" typeId="powerConsumption" />
+		</channels>
+		<config-description>
+			<parameter name="ipAddress" type="text">
+				<context>network-address</context>
+				<label>Network Address</label>
+				<description>Network address of the device.</description>
+				<required>true</required>
+				<advanced>true</advanced>
+			</parameter>
+			<parameter name="port" type="integer">
+				<context>network-port</context>
+				<label>Network Port</label>
+				<description>Network port of the device.</description>
+				<required>true</required>
+				<advanced>true</advanced>
+			</parameter>
+			<parameter name="mac" type="text">
+				<context>mac-address</context>
+				<label>MAC Address</label>
+				<description>MAC address of the device.</description>
+				<required>true</required>
+				<advanced>true</advanced>
+			</parameter>
+			<parameter name="pollingInterval" type="integer" min="30" step="1">
+				<label>Polling Interval</label>
+				<description>The interval in seconds for polling the status of the device.</description>
+				<required>true</required>
+				<default>30</default>
+			</parameter>
+			<parameter name="authorizationKey" type="text">
+				<context>password</context>
+				<label>Authentication Key</label>
+				<description>Authentication key of the device.</description>
+				<required>true</required>
+			</parameter>
+			<parameter name="iv" type="text">
+				<context>password</context>
+				<label>IV</label>
+				<description>Initialization Vector</description>
+				<required>true</required>
+			</parameter>
+		</config-description>
+	</thing-type>
+	<thing-type id="a1">
+		<label>Broadlink A1</label>
+		<description>The Broadlink A1 is a multi sensor  that can can detect temperature, humidity, illumination, background noise and air quality.</description>
+		<channels>
+			<channel id="temperature" typeId="temperature" />
+			<channel id="humidity" typeId="humidity" />
+			<channel id="noise" typeId="noise" />
+			<channel id="light" typeId="light" />
+			<channel id="air" typeId="air" />
+		</channels>
+		<config-description>
+			<parameter name="ipAddress" type="text">
+				<context>network-address</context>
+				<label>Network Address</label>
+				<description>Network address of the device.</description>
+				<required>true</required>
+				<advanced>true</advanced>
+			</parameter>
+			<parameter name="port" type="integer">
+				<context>network-port</context>
+				<label>Network Port</label>
+				<description>Network port of the device.</description>
+				<required>true</required>
+				<advanced>true</advanced>
+			</parameter>
+			<parameter name="mac" type="text">
+				<context>mac-address</context>
+				<label>MAC Address</label>
+				<description>MAC address of the device.</description>
+				<required>true</required>
+				<advanced>true</advanced>
+			</parameter>
+			<parameter name="pollingInterval" type="integer" min="30" step="1">
+				<label>Polling Interval</label>
+				<description>The interval in seconds for polling the status of the device.</description>
+				<required>true</required>
+				<default>30</default>
+			</parameter>
+			<parameter name="authorizationKey" type="text">
+				<context>password</context>
+				<label>Authentication Key</label>
+				<description>Authentication key of the device.</description>
+				<required>true</required>
+			</parameter>
+			<parameter name="iv" type="text">
+				<context>password</context>
+				<label>IV</label>
+				<description>Initialization Vector</description>
+				<required>false</required>
+			</parameter>
+		</config-description>
+	</thing-type>
+	<thing-type id="rm">
+		<label>Broadlink RM</label>
+		<description>The Broadlink RM Home is a IR transmitter with Wi-Fi connectivity.</description>
+		<channels>
+			<channel id="command" typeId="command" />
+		</channels>
+		<config-description>
+			<parameter name="ipAddress" type="text">
+				<context>network-address</context>
+				<label>Network Address</label>
+				<description>Network address of the device.</description>
+				<required>true</required>
+				<advanced>true</advanced>
+			</parameter>
+			<parameter name="port" type="integer">
+				<context>network-port</context>
+				<label>Network Port</label>
+				<description>Network port of the device.</description>
+				<required>true</required>
+				<advanced>true</advanced>
+			</parameter>
+			<parameter name="mac" type="text">
+				<context>mac-address</context>
+				<label>MAC Address</label>
+				<description>MAC address of the device.</description>
+				<required>true</required>
+				<advanced>true</advanced>
+			</parameter>
+			<parameter name="pollingInterval" type="integer" min="30" step="1">
+				<label>Polling Interval</label>
+				<description>The interval in seconds for polling the status of the device.</description>
+				<required>true</required>
+				<default>30</default>
+			</parameter>
+			<parameter name="authorizationKey" type="text">
+				<context>password</context>
+				<label>Authentication Key</label>
+				<description>Authentication key of the device.</description>
+				<required>true</required>
+			</parameter>
+			<parameter name="iv" type="text">
+				<context>password</context>
+				<label>IV</label>
+				<description>Initialization Vector</description>
+				<required>true</required>
+			</parameter>
+			<parameter name="mapFilename" type="text">
+				<label>Map File</label>
+				<description>Enter name of file containing mapping of commands to IR codes</description>
+				<default>broadlink.map</default>
+				<required>true</required>
+			</parameter>
+		</config-description>
+	</thing-type>
+	<thing-type id="rm2">
+		<label>Broadlink RM2</label>
+		<description>The Broadlink RM Pro is a IR\RF transmitter and temperature sensor with Wi-Fi connectivity.</description>
+		<channels>
+			<channel id="command" typeId="command" />
+			<channel id="temperature" typeId="temperature" />
+		</channels>
+		<config-description>
+			<parameter name="ipAddress" type="text">
+				<context>network-address</context>
+				<label>Network Address</label>
+				<description>Network address of the device.</description>
+				<required>true</required>
+				<advanced>true</advanced>
+			</parameter>
+			<parameter name="port" type="integer">
+				<context>network-port</context>
+				<label>Network Port</label>
+				<description>Network port of the device.</description>
+				<required>true</required>
+				<advanced>true</advanced>
+			</parameter>
+			<parameter name="mac" type="text">
+				<context>mac-address</context>
+				<label>MAC Address</label>
+				<description>MAC address of the device.</description>
+				<required>true</required>
+				<advanced>true</advanced>
+			</parameter>
+			<parameter name="pollingInterval" type="integer" min="30" step="1">
+				<label>Polling Interval</label>
+				<description>The interval in seconds for polling the status of the device.</description>
+				<required>true</required>
+				<default>30</default>
+			</parameter>
+			<parameter name="mapFilename" type="text">
+				<label>Map File</label>
+				<description>Enter name of file containing mapping of commands to IR and RF codes</description>
+				<default>broadlink.map</default>
+				<required>true</required>
+			</parameter>
+			<parameter name="authorizationKey" type="text">
+				<context>password</context>
+				<label>Authentication Key</label>
+				<description>Authentication key of the device.</description>
+				<required>true</required>
+			</parameter>
+			<parameter name="iv" type="text">
+				<context>password</context>
+				<label>IV</label>
+				<description>Initialization Vector</description>
+				<required>true</required>
+			</parameter>
+		</config-description>
+	</thing-type>
+	<thing-type id="rm3">
+		<label>Broadlink RM3</label>
+		<description>The Broadlink RM Mini is a IR transmitter with Wi-Fi connectivity.</description>
+		<channels>
+			<channel id="command" typeId="command" />
+		</channels>
+		<config-description>
+			<parameter name="ipAddress" type="text">
+				<context>network-address</context>
+				<label>Network Address</label>
+				<description>Network address of the device.</description>
+				<required>true</required>
+				<advanced>true</advanced>
+			</parameter>
+			<parameter name="port" type="integer">
+				<context>network-port</context>
+				<label>Network Port</label>
+				<description>Network port of the device.</description>
+				<required>true</required>
+				<advanced>true</advanced>
+			</parameter>
+			<parameter name="mac" type="text">
+				<context>mac-address</context>
+				<label>MAC Address</label>
+				<description>MAC address of the device.</description>
+				<required>true</required>
+				<advanced>true</advanced>
+			</parameter>
+			<parameter name="mapFilename" type="text">
+				<label>Map File</label>
+				<description>Enter name of file containing mapping of commands to IR codes</description>
+				<required>true</required>
+				<default>broadlink.map</default>
+			</parameter>
+			<parameter name="authorizationKey" type="text">
+				<context>password</context>
+				<label>Authentication Key</label>
+				<description>Authentication key of the device.</description>
+				<required>true</required>
+			</parameter>
+			<parameter name="iv" type="text">
+				<context>password</context>
+				<label>IV</label>
+				<description>Initialization Vector</description>
+				<required>true</required>
+			</parameter>
+		</config-description>
+	</thing-type>
+
+	<!-- Sample Channel Type -->
+	<channel-type id="command">
+		<item-type>String</item-type>
+		<label>Command</label>
+		<description>The IR/RF command sent to the device</description>
+		<category>Text</category>
+	</channel-type>
+	<channel-type id="temperature" advanced="true">
+		<item-type>Number</item-type>
+		<label>Temperature</label>
+		<category>Temperature</category>
+		<tags>
+			<tag>weather</tag>
+		</tags>
+		<state min="-50" max="60" step="0.1" pattern="%.1f °C" readOnly="true">
+		</state>
+	</channel-type>
+	<channel-type id="humidity" advanced="true">
+		<item-type>Number</item-type>
+		<label>Humidity</label>
+		<category>Humidity</category>
+		<tags>
+			<tag>weather</tag>
+		</tags>
+		<state min="0" max="100" step="0.1" pattern="%.1f%%" readOnly="true">
+		</state>
+	</channel-type>
+	<channel-type id="powerOn" advanced="true">
+		<item-type>Switch</item-type>
+		<label>Power On/Off</label>
+		<category>PowerOutlet</category>
+	</channel-type>
+	<channel-type id="powerConsumption" advanced="true">
+		<item-type>Number</item-type>
+		<label>Power consumption</label>
+		<state pattern="%.2f" readOnly="true"></state>
+	</channel-type>
+	<channel-type id="s1powerOn" advanced="true">
+		<item-type>Switch</item-type>
+		<label>S1 Power On/Off</label>
+		<category>PowerOutlet</category>
+	</channel-type>
+	<channel-type id="s2powerOn" advanced="true">
+		<item-type>Switch</item-type>
+		<label>S2 Power On/Off</label>
+		<category>PowerOutlet</category>
+	</channel-type>
+	<channel-type id="s3powerOn" advanced="true">
+		<item-type>Switch</item-type>
+		<label>S3 Power On/Off</label>
+		<category>PowerOutlet</category>
+	</channel-type>
+	<channel-type id="s4powerOn" advanced="true">
+		<item-type>Switch</item-type>
+		<label>S4 Power On/Off</label>
+		<category>PowerOutlet</category>
+	</channel-type>
+	<channel-type id="light" advanced="true">
+		<item-type>String</item-type>
+		<label>Illumination</label>
+		<description>Light conditions</description>
+		<state readOnly="true"></state>
+	</channel-type>
+	<channel-type id="noise" advanced="true">
+		<item-type>String</item-type>
+		<label>Background noise</label>
+		<description>Noise conditions</description>
+		<state readOnly="true"></state>
+	</channel-type>
+	<channel-type id="air" advanced="true">
+		<item-type>String</item-type>
+		<label>Air quality</label>
+		<description>Air quality conditions</description>
+		<state readOnly="true"></state>
+	</channel-type>
+</thing:thing-descriptions>
+
+
+
+
+
+
+
+
+
+
+
