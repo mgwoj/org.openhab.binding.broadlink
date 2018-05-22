@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory;
  */
 public class BroadlinkControllerHandler extends BaseBridgeHandler {
    private Logger logger = LoggerFactory.getLogger(BroadlinkControllerHandler.class);
-   public static final Set SUPPORTED_THING_TYPES_UIDS;
+   public static final Set<ThingTypeUID> SUPPORTED_THING_TYPES_UIDS;
    private BroadlinkHandlerFactory factory;
 
    static {
@@ -41,7 +41,7 @@ public class BroadlinkControllerHandler extends BaseBridgeHandler {
       this.factory = factory;
    }
 
-   public void handleCommand(ChannelUID channelUID, Command command) {
+    public void handleCommand(final ChannelUID channelUID, final Command command) {
    }
 
    public void initialize() {
@@ -50,14 +50,14 @@ public class BroadlinkControllerHandler extends BaseBridgeHandler {
    public void dispose() {
    }
 
-   protected void updateStatus(ThingStatus status, ThingStatusDetail detail, String comment) {
+    protected void updateStatus(final ThingStatus status, final ThingStatusDetail detail, final String comment) {
       super.updateStatus(status, detail, comment);
       this.logger.debug("Updating listeners with status {}", status);
    }
 
-   public void addControllerStatusListener(ControllerStatusListener listener) {
+    public void addControllerStatusListener(final ControllerStatusListener listener) {
    }
 
-   public void removeControllerStatusListener(ControllerStatusListener listener) {
+    public void removeControllerStatusListener(final ControllerStatusListener listener) {
    }
 }

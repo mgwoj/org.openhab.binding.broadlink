@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
 public class BroadlinkRemoteHandler extends BroadlinkBaseThingHandler {
    private Logger logger = LoggerFactory.getLogger(BroadlinkRemoteHandler.class);
 
-   public BroadlinkRemoteHandler(Thing thing) {
+   public BroadlinkRemoteHandler(final Thing thing) {
       super(thing);
    }
 
@@ -42,8 +42,8 @@ public class BroadlinkRemoteHandler extends BroadlinkBaseThingHandler {
       try {
          outputStream.write(new byte[]{2, 0, 0, 0});
          outputStream.write(code);
-      } catch (IOException var4) {
-//         var4.printStackTrace();
+      } catch (IOException e) {
+//         e.printStackTrace();
       }
 
       if (outputStream.size() % 16 == 0) {
@@ -52,7 +52,8 @@ public class BroadlinkRemoteHandler extends BroadlinkBaseThingHandler {
 
    }
 
-   public void handleCommand(ChannelUID channelUID, Command command) {
+    @Override
+    public void handleCommand(final ChannelUID channelUID, final Command command) {
       if (command == null) {
          if (this.logger.isDebugEnabled()) {
             this.logger.debug("Command passed to handler for thing {} is null");
@@ -66,16 +67,14 @@ public class BroadlinkRemoteHandler extends BroadlinkBaseThingHandler {
       } else if (command instanceof RefreshType) {
          this.updateItemStatus();
       } else {
-         Channel channel = this.thing.getChannel(channelUID.getId());
-         String var4;
-         switch((var4 = channel.getChannelTypeUID().getId()).hashCode()) {
-         case 950394699:
-            if (var4.equals("command")) {
+        final Channel channel = this.thing.getChannel(channelUID.getId());
+        switch (channel.getChannelTypeUID().getId()) {
+            case "command": {
                if (this.logger.isDebugEnabled()) {
                   this.logger.debug("Handling ir/rf command {} on channel {} of thing {}", new Object[]{command, channelUID.getId(), this.getThing().getLabel()});
                }
 
-               byte[] code = this.lookupCode(command, channelUID);
+               final byte[] code = this.lookupCode(command, channelUID);
                if (code != null) {
                   this.sendCode(code);
                }
@@ -90,7 +89,7 @@ public class BroadlinkRemoteHandler extends BroadlinkBaseThingHandler {
       }
    }
 
-   private byte[] lookupCode(Command command, ChannelUID channelUID) {
+   private byte[] lookupCode(final Command command, final ChannelUID channelUID) {
       if (command.toString() == null) {
          if (this.logger.isDebugEnabled()) {
             this.logger.debug("Unable to perform transform on null command string");
@@ -98,7 +97,7 @@ public class BroadlinkRemoteHandler extends BroadlinkBaseThingHandler {
 
          return null;
       } else {
-         String mapFile = (String)this.thing.getConfiguration().get("mapFilename");
+         final String mapFile = (String)this.thing.getConfiguration().get("mapFilename");
          if (StringUtils.isEmpty(mapFile)) {
             if (this.logger.isDebugEnabled()) {
                this.logger.debug("MAP file is not defined in configuration of thing {}", this.getThing().getLabel());
@@ -106,20 +105,18 @@ public class BroadlinkRemoteHandler extends BroadlinkBaseThingHandler {
 
             return null;
          } else {
-            TransformationService transformService = TransformationHelper.getTransformationService(this.bundleContext, "MAP");
+            final TransformationService transformService = TransformationHelper.getTransformationService(this.bundleContext, "MAP");
             if (transformService == null) {
                this.logger.error("Failed to get MAP transformation service for thing {}; is bundle installed?", this.getThing().getLabel());
                return null;
             } else {
-               Object var6 = null;
-
                String value;
                byte[] code;
                try {
                   value = transformService.transform(mapFile, command.toString());
                   code = Hex.convertHexToBytes(value);
-               } catch (TransformationException var8) {
-                  this.logger.error("Failed to transform {} for thing {} using map file '{}', exception={}", new Object[]{command, this.getThing().getLabel(), mapFile, var8.getMessage()});
+               } catch (TransformationException e) {
+                  this.logger.error("Failed to transform {} for thing {} using map file '{}', exception={}", new Object[]{command, this.getThing().getLabel(), mapFile, e.getMessage()});
                   return null;
                }
 

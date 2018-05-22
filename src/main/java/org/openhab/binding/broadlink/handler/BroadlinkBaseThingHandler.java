@@ -80,9 +80,9 @@ public class BroadlinkBaseThingHandler extends BaseThingHandler {
         if (this.iv != this.thingConfig.getIV() || this.authenticationKey != this.thingConfig.getAuthorizationKey()) {
             this.iv = this.thingConfig.getIV();
             this.authenticationKey = this.thingConfig.getAuthorizationKey();
-            Map properties = this.editProperties();
-            properties.put("id", (Object) null);
-            properties.put("key", (Object) null);
+            final Map<String, String> properties = (Map<String, String>)this.editProperties();
+            properties.put("id", null);
+            properties.put("key", null);
             this.updateProperties(properties);
             if (this.authenticate()) {
                 this.updateStatus(ThingStatus.ONLINE);
@@ -124,31 +124,8 @@ public class BroadlinkBaseThingHandler extends BaseThingHandler {
     }
 
     private boolean authenticate() {
-        byte[] payload = new byte[80];
-        payload[4] = 49;
-        payload[5] = 49;
-        payload[6] = 49;
-        payload[7] = 49;
-        payload[8] = 49;
-        payload[9] = 49;
-        payload[10] = 49;
-        payload[11] = 49;
-        payload[12] = 49;
-        payload[13] = 49;
-        payload[14] = 49;
-        payload[15] = 49;
-        payload[16] = 49;
-        payload[17] = 49;
-        payload[18] = 49;
-        payload[30] = 1;
-        payload[45] = 1;
-        payload[48] = 84;
-        payload[49] = 101;
-        payload[50] = 115;
-        payload[51] = 116;
-        payload[52] = 32;
-        payload[53] = 32;
-        payload[54] = 49;
+        final byte[] payload = { 0, 0, 0, 0, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 84, 101, 115, 116, 32, 32, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+  
         if (!this.sendDatagram(this.buildMessage((byte) 101, payload))) {
             logger.debug("Authenticated device '{}' failed.", this.getThing().getUID());
             return false;
@@ -163,11 +140,11 @@ public class BroadlinkBaseThingHandler extends BaseThingHandler {
                     logger.debug("Authenticated device '{}' failed.", this.getThing().getUID());
                     return false;
                 } else {
-                    byte[] decryptResponse = Utils.decrypt(Hex.convertHexToBytes(this.authenticationKey),
+                    final byte[] decryptResponse = Utils.decrypt(Hex.convertHexToBytes(this.authenticationKey),
                             new IvParameterSpec(Hex.convertHexToBytes(this.iv)), Utils.slice(response, 56, 88));
-                    byte[] deviceId = Utils.getDeviceId(decryptResponse);
-                    byte[] deviceKey = Utils.getDeviceKey(decryptResponse);
-                    Map properties = this.editProperties();
+                    final byte[] deviceId = Utils.getDeviceId(decryptResponse);
+                    final byte[] deviceKey = Utils.getDeviceKey(decryptResponse);
+                    final Map<String, String> properties = (Map<String, String>)this.editProperties();
                     properties.put("key", Hex.toHexString(deviceKey));
                     properties.put("id", Hex.toHexString(deviceId));
                     this.updateProperties(properties);

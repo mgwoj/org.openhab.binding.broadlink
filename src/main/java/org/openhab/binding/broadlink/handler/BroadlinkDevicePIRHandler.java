@@ -21,6 +21,6 @@ import org.slf4j.LoggerFactory;
 public class BroadlinkDevicePIRHandler {
    private final Logger logger = LoggerFactory.getLogger(BroadlinkDevicePIRHandler.class);
 
-   public BroadlinkDevicePIRHandler(Thing thing) {
+   public BroadlinkDevicePIRHandler(final Thing thing) {
    }
 }

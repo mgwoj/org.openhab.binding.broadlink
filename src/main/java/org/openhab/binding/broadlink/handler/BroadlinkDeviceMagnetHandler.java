@@ -21,6 +21,6 @@ import org.slf4j.LoggerFactory;
 public class BroadlinkDeviceMagnetHandler {
    private final Logger logger = LoggerFactory.getLogger(BroadlinkDeviceMagnetHandler.class);
 
-   public BroadlinkDeviceMagnetHandler(Thing thing) {
+   public BroadlinkDeviceMagnetHandler(final Thing thing) {
    }
 }
