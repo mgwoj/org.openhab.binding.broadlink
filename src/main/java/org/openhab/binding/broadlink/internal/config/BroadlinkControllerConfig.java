@@ -9,8 +9,6 @@
 package org.openhab.binding.broadlink.internal.config;
 
 /**
-
-
  *
  * @author Cato - Initial contribution
  */

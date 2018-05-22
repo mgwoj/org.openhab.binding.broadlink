@@ -9,8 +9,6 @@
 package org.openhab.binding.broadlink.internal.config;
 
 /**
-
-
  *
  * @author Cato - Initial contribution
  */
@@ -27,11 +25,11 @@ public class BroadlinkDeviceConfiguration {
         return this.ipAddress;
     }
 
-    public void setIpAddress(String ipAddress) {
+    public void setIpAddress(final String ipAddress) {
         this.ipAddress = ipAddress;
     }
 
-    public void setPort(int port) {
+    public void setPort(final int port) {
         this.port = port;
     }
 
@@ -39,16 +37,16 @@ public class BroadlinkDeviceConfiguration {
         return this.port;
     }
 
-    public void setMAC(String mac) {
+    public void setMAC(final String mac) {
         this.mac = mac;
     }
 
     public byte[] getMAC() {
-        byte[] configMac = new byte[6];
-        String[] elements = this.mac.split(":");
+        final byte[] configMac = new byte[6];
+        final String[] elements = this.mac.split(":");
 
         for (int i = 0; i < 6; ++i) {
-            String element = elements[i];
+            final String element = elements[i];
             configMac[i] = (byte) Integer.parseInt(element, 16);
         }
 
@@ -59,7 +57,7 @@ public class BroadlinkDeviceConfiguration {
         return this.pollingInterval;
     }
 
-    public void setPollingInterval(int pollingInterval) {
+    public void setPollingInterval(final int pollingInterval) {
         this.pollingInterval = pollingInterval;
     }
 
@@ -67,7 +65,7 @@ public class BroadlinkDeviceConfiguration {
         return this.mapFilename;
     }
 
-    public void setMapFilename(String mapFilename) {
+    public void setMapFilename(final String mapFilename) {
         this.mapFilename = mapFilename;
     }
 
@@ -75,7 +73,7 @@ public class BroadlinkDeviceConfiguration {
         return this.authorizationKey;
     }
 
-    public void setAuthorizationKey(String authorizationKey) {
+    public void setAuthorizationKey(final String authorizationKey) {
         this.authorizationKey = authorizationKey;
     }
 
@@ -83,7 +81,7 @@ public class BroadlinkDeviceConfiguration {
         return this.iv;
     }
 
-    public void setIV(String iv) {
+    public void setIV(final String iv) {
         this.iv = iv;
     }
 

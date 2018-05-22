@@ -13,15 +13,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
-
-
  *
  * @author Cato Sognen - Initial contribution
  */
 public class BroadlinkSocketHandler extends BroadlinkBaseThingHandler {
-   private Logger logger = LoggerFactory.getLogger(BroadlinkSocketHandler.class);
+    private Logger logger = LoggerFactory.getLogger(BroadlinkSocketHandler.class);
 
-   public BroadlinkSocketHandler(Thing thing) {
-      super(thing);
-   }
+    public BroadlinkSocketHandler(final Thing thing) {
+        super(thing);
+    }
 }

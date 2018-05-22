@@ -14,8 +14,6 @@ import java.util.Set;
 import org.eclipse.smarthome.core.thing.ThingTypeUID;
 
 /**
-
-
  *
  * @author Cato Sognen - Initial contribution
  */
@@ -39,7 +37,7 @@ public class BroadlinkBindingConstants {
     public static final ThingTypeUID THING_TYPE_S1C = new ThingTypeUID("broadlink", "s1c");
     public static final ThingTypeUID THING_TYPE_PIR = new ThingTypeUID("broadlink", "s1p");
     public static final ThingTypeUID THING_TYPE_MAGNET = new ThingTypeUID("broadlink", "s1m");
-    public static final Set SUPPORTED_THING_TYPES_UIDS = new HashSet();
+    public static final Set<ThingTypeUID> SUPPORTED_THING_TYPES_UIDS = new HashSet<>();
     public static final String CHANNEL_COMMAND = "command";
     public static final String CHANNEL_TEMPERATURE = "temperature";
     public static final String CHANNEL_HUMIDITY = "humidity";

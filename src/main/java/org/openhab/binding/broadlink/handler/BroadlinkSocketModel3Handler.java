@@ -11,13 +11,11 @@ package org.openhab.binding.broadlink.handler;
 import org.eclipse.smarthome.core.thing.Thing;
 
 /**
-
-
  *
  * @author Cato Sognen - Initial contribution
  */
 public class BroadlinkSocketModel3Handler extends BroadlinkSocketModel2Handler {
-    public BroadlinkSocketModel3Handler(Thing thing) {
+    public BroadlinkSocketModel3Handler(final Thing thing) {
         super(thing);
     }
 }

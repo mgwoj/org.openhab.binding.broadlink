@@ -35,13 +35,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
-
-
  *
  * @author Cato Sognen - Initial contribution
  */
 public class BroadlinkDiscoveryService extends AbstractDiscoveryService implements BroadlinkSocketListener {
-    private static final Set SUPPORTED_THING_TYPES;
+    private static final Set<ThingTypeUID> SUPPORTED_THING_TYPES;
     private final Logger logger = LoggerFactory.getLogger(BroadlinkDiscoveryService.class);
 
     static {
@@ -77,29 +75,30 @@ public class BroadlinkDiscoveryService extends AbstractDiscoveryService implemen
 
         try {
             discoveryEndedLock.acquire();
-        } catch (InterruptedException var3) {
-            this.logger.error("Discovery problem {}", var3.getMessage());
+        } catch (InterruptedException e) {
+            this.logger.error("Discovery problem {}", e.getMessage());
         }
 
     }
 
     @Override
-    public void onDataReceived(String remoteAddress, int remotePort, String remoteMAC, ThingTypeUID thingTypeUID) {
+    public void onDataReceived(final String remoteAddress, final int remotePort, final String remoteMAC,
+            final ThingTypeUID thingTypeUID) {
         this.discoveryResultSubmission(remoteAddress, remotePort, remoteMAC, thingTypeUID);
     }
 
-    private void discoveryResultSubmission(String remoteAddress, int remotePort, String remoteMAC,
-            ThingTypeUID thingTypeUID) {
+    private void discoveryResultSubmission(final String remoteAddress, final int remotePort, final String remoteMAC,
+            final ThingTypeUID thingTypeUID) {
         if (this.logger.isDebugEnabled()) {
             this.logger.debug("Adding new Broadlink device on {} with mac '{}' to Smarthome inbox", remoteAddress,
                     remoteMAC);
         }
 
-        Map properties = new HashMap(6);
+        final Map<String, Object> properties = new HashMap<String, Object>(6);
         properties.put("ipAddress", remoteAddress);
         properties.put("port", remotePort);
         properties.put("mac", remoteMAC);
-        ThingUID thingUID = new ThingUID(thingTypeUID, remoteMAC.replace(":", "-"));
+        final ThingUID thingUID = new ThingUID(thingTypeUID, remoteMAC.replace(":", "-"));
         if (thingUID != null) {
             if (this.logger.isDebugEnabled()) {
                 this.logger.debug("Device '{}' discovered on '{}'.", thingUID, remoteAddress);
@@ -154,14 +153,14 @@ public class BroadlinkDiscoveryService extends AbstractDiscoveryService implemen
     private static InetAddress getLocalHostLANAddress() throws UnknownHostException {
         try {
             InetAddress candidateAddress = null;
-            Enumeration ifaces = NetworkInterface.getNetworkInterfaces();
+            final Enumeration<?> ifaces = NetworkInterface.getNetworkInterfaces();
 
             while (ifaces.hasMoreElements()) {
-                NetworkInterface iface = (NetworkInterface) ifaces.nextElement();
-                Enumeration inetAddrs = iface.getInetAddresses();
+                final NetworkInterface iface = (NetworkInterface) ifaces.nextElement();
+                final Enumeration<?> inetAddrs = iface.getInetAddresses();
 
                 while (inetAddrs.hasMoreElements()) {
-                    InetAddress inetAddr = (InetAddress) inetAddrs.nextElement();
+                    final InetAddress inetAddr = (InetAddress) inetAddrs.nextElement();
                     if (!inetAddr.isLoopbackAddress()) {
                         if (inetAddr.isSiteLocalAddress()) {
                             return inetAddr;
@@ -177,7 +176,7 @@ public class BroadlinkDiscoveryService extends AbstractDiscoveryService implemen
             if (candidateAddress != null) {
                 return candidateAddress;
             } else {
-                InetAddress jdkSuppliedAddress = InetAddress.getLocalHost();
+                final InetAddress jdkSuppliedAddress = InetAddress.getLocalHost();
                 if (jdkSuppliedAddress == null) {
                     throw new UnknownHostException(
                             "The JDK InetAddress.getLocalHost() method unexpectedly returned null.");
@@ -185,27 +184,27 @@ public class BroadlinkDiscoveryService extends AbstractDiscoveryService implemen
                     return jdkSuppliedAddress;
                 }
             }
-        } catch (Exception var5) {
+        } catch (Exception e) {
             UnknownHostException unknownHostException = new UnknownHostException(
-                    "Failed to determine LAN address: " + var5);
-            unknownHostException.initCause(var5);
+                    "Failed to determine LAN address: " + e);
+            unknownHostException.initCause(e);
             throw unknownHostException;
         }
     }
 
     private void discoverDevices() {
         try {
-            InetAddress localAddress = getLocalHostLANAddress();
-            int localPort = this.nextFreePort(localAddress, 1024, 3000);
-            byte[] message = this.buildDisoveryPacket(localAddress.getHostAddress(), localPort);
+            final InetAddress localAddress = getLocalHostLANAddress();
+            final int localPort = this.nextFreePort(localAddress, 1024, 3000);
+            final byte[] message = this.buildDisoveryPacket(localAddress.getHostAddress(), localPort);
             BroadlinkSocket.sendMessage(message, "255.255.255.255", 80);
-        } catch (UnknownHostException var4) {
-            // var4.printStackTrace();
+        } catch (UnknownHostException e) {
+            // e.printStackTrace();
         }
 
     }
 
-    public int nextFreePort(InetAddress host, int from, int to) {
+    public int nextFreePort(final InetAddress host, final int from, final int to) {
         int port;
         for (port = randInt(from, to); !this.isLocalPortFree(host, port); port = ThreadLocalRandom.current()
                 .nextInt(from, to)) {
@@ -217,9 +216,9 @@ public class BroadlinkDiscoveryService extends AbstractDiscoveryService implemen
 
     private boolean isLocalPortFree(InetAddress host, int port) {
         try {
-            (new ServerSocket(port, 50, host)).close();
+            new ServerSocket(port, 50, host).close();
             return true;
-        } catch (IOException var4) {
+        } catch (IOException e) {
             return false;
         }
     }
@@ -229,7 +228,7 @@ public class BroadlinkDiscoveryService extends AbstractDiscoveryService implemen
         return randomNum;
     }
 
-    private byte[] buildDisoveryPacket(String host, int port) {
+    private byte[] buildDisoveryPacket(final String host, final int port) {
         String[] localAddress = null;
         localAddress = host.toString().split("\\.");
         int[] ipAddress = new int[4];
@@ -238,11 +237,11 @@ public class BroadlinkDiscoveryService extends AbstractDiscoveryService implemen
             ipAddress[i] = Integer.parseInt(localAddress[i]);
         }
 
-        Calendar calendar = Calendar.getInstance();
+        final Calendar calendar = Calendar.getInstance();
         calendar.setFirstDayOfWeek(2);
-        TimeZone timeZone = TimeZone.getDefault();
-        int timezone = timeZone.getRawOffset() / 3600000;
-        byte[] packet = new byte[48];
+        final TimeZone timeZone = TimeZone.getDefault();
+        final int timezone = timeZone.getRawOffset() / 3600000;
+        final byte[] packet = new byte[48];
         if (timezone < 0) {
             packet[8] = (byte) (255 + timezone - 1);
             packet[9] = -1;
@@ -255,7 +254,7 @@ public class BroadlinkDiscoveryService extends AbstractDiscoveryService implemen
             packet[11] = 0;
         }
 
-        packet[12] = (byte) (calendar.get(1) & 255);
+        packet[12] = (byte) (calendar.get(1) & 0xFF);
         packet[13] = (byte) (calendar.get(1) >> 8);
         packet[14] = (byte) calendar.get(12);
         packet[15] = (byte) calendar.get(11);
@@ -271,16 +270,14 @@ public class BroadlinkDiscoveryService extends AbstractDiscoveryService implemen
         packet[29] = (byte) (port >> 8);
         packet[38] = 6;
         int checksum = 48815;
-        byte[] var13 = packet;
-        int var12 = packet.length;
 
-        for (int var11 = 0; var11 < var12; ++var11) {
-            byte b = var13[var11];
+        for (int k = 0; k < packet.length; ++k) {
+            byte b = packet[k];
             checksum += Byte.toUnsignedInt(b);
         }
 
         checksum &= 65535;
-        packet[32] = (byte) (checksum & 255);
+        packet[32] = (byte) (checksum & 0xFF);
         packet[33] = (byte) (checksum >> 8);
         return packet;
     }

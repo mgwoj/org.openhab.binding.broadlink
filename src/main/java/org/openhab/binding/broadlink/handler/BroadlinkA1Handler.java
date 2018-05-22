@@ -29,21 +29,21 @@ import org.slf4j.LoggerFactory;
 public class BroadlinkA1Handler extends BroadlinkBaseThingHandler {
     private Logger logger = LoggerFactory.getLogger(BroadlinkA1Handler.class);
 
-    public BroadlinkA1Handler(Thing thing) {
+    public BroadlinkA1Handler(final Thing thing) {
         super(thing);
     }
 
     private boolean getStatusFromDevice() {
-        byte[] payload = new byte[16];
+        final byte[] payload = new byte[16];
         payload[0] = 1;
 
         try {
-            byte[] message = this.buildMessage((byte) 106, payload);
+            final byte[] message = this.buildMessage((byte) 106, payload);
             if (!this.sendDatagram(message)) {
                 this.logger.error("Sending packet to device '{}' failed.", this.getThing().getUID());
                 return false;
             } else {
-                byte[] response = this.receiveDatagram();
+                final byte[] response = this.receiveDatagram();
                 if (response == null) {
                     this.logger.debug("Incoming packet from device '{}' is null.", this.getThing().getUID());
                     return false;
@@ -53,11 +53,12 @@ public class BroadlinkA1Handler extends BroadlinkBaseThingHandler {
                         this.logger.error("Response from device '{}' is not valid.", this.thingConfig.getIpAddress());
                         return false;
                     } else {
-                        IvParameterSpec ivSpec = new IvParameterSpec(Hex.convertHexToBytes(this.thingConfig.getIV()));
-                        Map properties = this.editProperties();
-                        byte[] decryptResponse = Utils.decrypt(Hex.fromHexString((String) properties.get("key")),
-                                ivSpec, Utils.slice(response, 56, 88));
-                        float temperature = (float) ((decryptResponse[4] * 10 + decryptResponse[5]) / 10.0D);
+                        final IvParameterSpec ivSpec = new IvParameterSpec(
+                                Hex.convertHexToBytes(this.thingConfig.getIV()));
+                        final Map<String, String> properties = this.editProperties();
+                        final byte[] decryptResponse = Utils.decrypt(Hex.fromHexString(properties.get("key")), ivSpec,
+                                Utils.slice(response, 56, 88));
+                        final float temperature = (float) ((decryptResponse[4] * 10 + decryptResponse[5]) / 10.0D);
                         this.updateState("temperature", new DecimalType(temperature));
                         this.updateState("humidity",
                                 new DecimalType((decryptResponse[6] * 10 + decryptResponse[7]) / 10.0D));
@@ -68,9 +69,9 @@ public class BroadlinkA1Handler extends BroadlinkBaseThingHandler {
                     }
                 }
             }
-        } catch (Exception var9) {
-            // var9.printStackTrace();
-            this.logger.error("{}.", var9.getMessage());
+        } catch (Exception e) {
+            // e.printStackTrace();
+            this.logger.error("{}.", e.getMessage());
             return false;
         }
     }

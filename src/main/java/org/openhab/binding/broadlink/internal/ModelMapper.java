@@ -13,13 +13,11 @@ import org.eclipse.smarthome.core.thing.ThingTypeUID;
 import org.openhab.binding.broadlink.BroadlinkBindingConstants;
 
 /**
-
-
  *
  * @author Cato Sognen - Initial contribution
  */
 public class ModelMapper {
-    public static ThingTypeUID getThingType(int model) {
+    public static ThingTypeUID getThingType(final int model) {
         if (model == 0) {
             return BroadlinkBindingConstants.THING_TYPE_SP1;
         } else if (model == 10001) {
@@ -77,7 +75,7 @@ public class ModelMapper {
         }
     }
 
-    public static StringType getAirValue(byte b) {
+    public static StringType getAirValue(final byte b) {
         int air = Byte.toUnsignedInt(b);
         if (air == 0) {
             return new StringType("PERFECT");
@@ -90,7 +88,7 @@ public class ModelMapper {
         }
     }
 
-    public static StringType getLightValue(byte b) {
+    public static StringType getLightValue(final byte b) {
         int light = Byte.toUnsignedInt(b);
         if (light == 0) {
             return new StringType("DARK");
@@ -103,7 +101,7 @@ public class ModelMapper {
         }
     }
 
-    public static StringType getNoiseValue(byte b) {
+    public static StringType getNoiseValue(final byte b) {
         int noise = Byte.toUnsignedInt(b);
         if (noise == 0) {
             return new StringType("QUIET");

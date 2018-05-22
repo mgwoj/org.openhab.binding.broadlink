@@ -13,17 +13,15 @@ import java.util.regex.Pattern;
 import javax.xml.bind.DatatypeConverter;
 
 /**
-
-
  *
  * @author Cato Sognen - Initial contribution
  */
 public class Hex {
-    public static String decodeMAC(byte[] mac) {
+    public static String decodeMAC(final byte[] mac) {
         if (mac == null) {
             return null;
         } else {
-            StringBuilder sb = new StringBuilder(18);
+            final StringBuilder sb = new StringBuilder(18);
 
             for (int i = 5; i >= 0; --i) {
                 if (sb.length() > 0) {
@@ -37,24 +35,24 @@ public class Hex {
         }
     }
 
-    public static boolean isHexCode(String code) {
-        Pattern pattern = Pattern.compile("0000( +[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f])+");
+    public static boolean isHexCode(final String code) {
+        final Pattern pattern = Pattern.compile("0000( +[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f])+");
         return pattern.matcher(code).find();
     }
 
-    public static byte[] convertHexToBytes(String code) {
+    public static byte[] convertHexToBytes(final String code) {
         return DatatypeConverter.parseHexBinary(code);
     }
 
-    public static byte[] fromHexString(String hex) {
+    public static byte[] fromHexString(final String hex) {
         if (hex.length() % 2 != 0) {
             throw new IllegalArgumentException("Input string must contain an even number of characters");
         } else {
-            byte[] result = new byte[hex.length() / 2];
-            char[] bytes = hex.toCharArray();
+            final byte[] result = new byte[hex.length() / 2];
+            final char[] bytes = hex.toCharArray();
 
             for (int i = 0; i < bytes.length; i += 2) {
-                StringBuilder curr = new StringBuilder(2);
+                final StringBuilder curr = new StringBuilder(2);
                 curr.append(bytes[i]).append(bytes[i + 1]);
                 result[i / 2] = (byte) Integer.parseInt(curr.toString(), 16);
             }
@@ -63,20 +61,15 @@ public class Hex {
         }
     }
 
-    public static String toHexString(byte[] raw) {
+    public static String toHexString(final byte[] raw) {
         String HEXES = "0123456789ABCDEF";
         if (raw == null) {
             return null;
         } else {
-            StringBuilder hex = new StringBuilder(2 * raw.length);
-            byte[] var6 = raw;
-            int var5 = raw.length;
-
-            for (int var4 = 0; var4 < var5; ++var4) {
-                byte b = var6[var4];
-                hex.append("0123456789ABCDEF".charAt((b & 240) >> 4)).append("0123456789ABCDEF".charAt(b & 15));
+            final StringBuilder hex = new StringBuilder(2 * raw.length);
+            for (final byte b : raw) {
+                hex.append(HEXES.charAt((b & 0xF0) >> 4)).append(HEXES.charAt(b & 0xF));
             }
-
             return hex.toString();
         }
     }

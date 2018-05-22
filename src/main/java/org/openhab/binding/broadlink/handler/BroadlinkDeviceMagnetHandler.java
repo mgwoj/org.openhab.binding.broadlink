@@ -13,14 +13,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
-
-
  *
  * @author Cato Sognen - Initial contribution
  */
 public class BroadlinkDeviceMagnetHandler {
-   private final Logger logger = LoggerFactory.getLogger(BroadlinkDeviceMagnetHandler.class);
+    private final Logger logger = LoggerFactory.getLogger(BroadlinkDeviceMagnetHandler.class);
 
-   public BroadlinkDeviceMagnetHandler(final Thing thing) {
-   }
+    public BroadlinkDeviceMagnetHandler(final Thing thing) {
+    }
 }

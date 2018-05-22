@@ -17,6 +17,7 @@ import org.eclipse.smarthome.config.discovery.AbstractDiscoveryService;
 import org.eclipse.smarthome.config.discovery.DiscoveryResult;
 import org.eclipse.smarthome.config.discovery.DiscoveryResultBuilder;
 import org.eclipse.smarthome.core.thing.ThingStatus;
+import org.eclipse.smarthome.core.thing.ThingTypeUID;
 import org.eclipse.smarthome.core.thing.ThingUID;
 import org.openhab.binding.broadlink.BroadlinkBindingConstants;
 import org.openhab.binding.broadlink.handler.BroadlinkControllerHandler;
@@ -25,8 +26,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
-
-
  *
  * @author Cato Sognen - Initial contribution
  */
@@ -34,13 +33,13 @@ public class BroadlinkDeviceDiscoveryService extends AbstractDiscoveryService im
     private static final int DISCOVERY_TIMEOUT_SEC = 10;
     private final BroadlinkControllerHandler controller;
     Logger logger = LoggerFactory.getLogger(BroadlinkDeviceDiscoveryService.class);
-    public static final Set SUPPORTED_THING_TYPES_UIDS;
+    public static final Set<ThingTypeUID> SUPPORTED_THING_TYPES_UIDS;
 
     static {
         SUPPORTED_THING_TYPES_UIDS = Collections.singleton(BroadlinkBindingConstants.THING_TYPE_S1C);
     }
 
-    public BroadlinkDeviceDiscoveryService(BroadlinkControllerHandler controller) {
+    public BroadlinkDeviceDiscoveryService(final BroadlinkControllerHandler controller) {
         super(SUPPORTED_THING_TYPES_UIDS, 10, true);
         this.logger.debug("BroadlinkDeviceDiscoveryService {}", controller);
         this.controller = controller;
@@ -58,7 +57,7 @@ public class BroadlinkDeviceDiscoveryService extends AbstractDiscoveryService im
     }
 
     @Override
-    public void controllerStatusChanged(ThingStatus status) {
+    public void controllerStatusChanged(final ThingStatus status) {
         if (status.equals(ThingStatus.ONLINE)) {
             this.discoverDevices();
         }
@@ -72,15 +71,15 @@ public class BroadlinkDeviceDiscoveryService extends AbstractDiscoveryService im
     }
 
     private void discoverDevices() {
-        String serial = null;
-        String name = null;
-        String type = null;
-        ThingUID controllerUID = this.controller.getThing().getUID();
-        ThingUID thingUID = new ThingUID(type, controllerUID, serial);
-        Map properties = new HashMap(2);
+        final String serial = null;
+        final String name = null;
+        final String type = null;
+        final ThingUID controllerUID = this.controller.getThing().getUID();
+        final ThingUID thingUID = new ThingUID(type, controllerUID, serial);
+        final Map<String, Object> properties = new HashMap<String, Object>(2);
         properties.put("serial", serial);
         properties.put("name", name);
-        DiscoveryResult discoveryResult = DiscoveryResultBuilder.create(thingUID).withProperties(properties)
+        final DiscoveryResult discoveryResult = DiscoveryResultBuilder.create(thingUID).withProperties(properties)
                 .withBridge(controllerUID).withLabel(name).build();
         this.thingDiscovered(discoveryResult);
     }

@@ -23,8 +23,6 @@ import org.openhab.binding.broadlink.internal.Hex;
 import org.openhab.binding.broadlink.internal.Utils;
 
 /**
-
-
  *
  * @author Cato Sognen - Initial contribution
  */
@@ -34,7 +32,7 @@ public class BroadlinkStripModel1Handler extends BroadlinkBaseThingHandler {
     }
 
     @Override
-    public void handleCommand(ChannelUID channelUID, Command command) {
+    public void handleCommand(final ChannelUID channelUID, final Command command) {
         if (command instanceof RefreshType) {
             this.updateItemStatus();
         }
@@ -73,7 +71,7 @@ public class BroadlinkStripModel1Handler extends BroadlinkBaseThingHandler {
 
     }
 
-    private void setStatusOnDevice(byte sid, byte state) {
+    private void setStatusOnDevice(final byte sid, final byte state) {
         int sid_mask = 1 << sid - 1;
         byte[] payload = new byte[16];
         payload[0] = 13;
@@ -102,29 +100,20 @@ public class BroadlinkStripModel1Handler extends BroadlinkBaseThingHandler {
     }
 
     private boolean getStatusFromDevice() {
-        byte[] payload = new byte[16];
-        payload[0] = 10;
-        payload[2] = -91;
-        payload[3] = -91;
-        payload[4] = 90;
-        payload[5] = 90;
-        payload[6] = -82;
-        payload[7] = -64;
-        payload[8] = 1;
-
+        final byte[] payload = { 10, 0, -91, -91, 90, 90, -82, -64, 1, 0, 0, 0, 0, 0, 0, 0 };
         try {
-            byte[] message = this.buildMessage((byte) 106, payload);
+            final byte[] message = this.buildMessage((byte) 106, payload);
             this.sendDatagram(message);
-            byte[] response = this.receiveDatagram();
+            final byte[] response = this.receiveDatagram();
             if (response != null) {
                 int error = response[34] | response[35] << 8;
                 if (error == 0) {
-                    IvParameterSpec ivSpec = new IvParameterSpec(Hex.convertHexToBytes(this.thingConfig.getIV()));
-                    Map properties = this.editProperties();
-                    byte[] decodedPayload = Utils.decrypt(Hex.fromHexString((String) properties.get("key")), ivSpec,
+                    final IvParameterSpec ivSpec = new IvParameterSpec(Hex.convertHexToBytes(this.thingConfig.getIV()));
+                    final Map<String, String> properties = this.editProperties();
+                    final byte[] decodedPayload = Utils.decrypt(Hex.fromHexString(properties.get("key")), ivSpec,
                             Utils.slice(response, 56, 88));
                     if (decodedPayload != null) {
-                        int status = payload[14];
+                        final int status = payload[14];
                         if (status == 1) {
                             this.updateState("s1powerOn", OnOffType.ON);
                         } else {
@@ -159,8 +148,8 @@ public class BroadlinkStripModel1Handler extends BroadlinkBaseThingHandler {
             } else {
                 return false;
             }
-        } catch (Exception var9) {
-            // var9.printStackTrace();
+        } catch (Exception ex) {
+            // ex.printStackTrace();
             return false;
         }
     }

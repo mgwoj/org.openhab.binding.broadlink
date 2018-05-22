@@ -13,8 +13,6 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 /**
-
-
  *
  * @author Cato Sognen - Initial contribution
  */
@@ -23,50 +21,49 @@ public class Utils {
         return slice(response, 0, 4);
     }
 
-    public static byte[] getDeviceKey(byte[] response) {
+    public static byte[] getDeviceKey(final byte[] response) {
         return slice(response, 4, 20);
     }
 
-    public static byte[] slice(byte[] source, int from, int to) {
+    public static byte[] slice(final byte[] source, final int from, final int to) {
         if (from > to) {
             return null;
         } else if (to - from > source.length) {
             return null;
         } else {
-            byte[] sliced;
             if (to == from) {
-                sliced = new byte[] { source[from] };
+                final byte[] sliced = { source[from] };
                 return sliced;
             } else {
-                sliced = new byte[to - from];
+                final byte[] sliced = new byte[to - from];
                 System.arraycopy(source, from, sliced, 0, to - from);
                 return sliced;
             }
         }
     }
 
-    public static byte[] encrypt(byte[] key, IvParameterSpec ivSpec, byte[] data) {
+    public static byte[] encrypt(final byte[] key, final IvParameterSpec ivSpec, final byte[] data) {
         SecretKeySpec secretKey = new SecretKeySpec(key, "AES");
 
         try {
             Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding");
             cipher.init(1, secretKey, ivSpec);
             return cipher.doFinal(data);
-        } catch (Exception var6) {
-            // var6.printStackTrace();
+        } catch (Exception e) {
+            // e.printStackTrace();
             return null;
         }
     }
 
-    public static byte[] decrypt(byte[] key, IvParameterSpec ivSpec, byte[] data) {
+    public static byte[] decrypt(final byte[] key, final IvParameterSpec ivSpec, final byte[] data) {
         SecretKeySpec secretKey = new SecretKeySpec(key, "AES");
 
         try {
             Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding");
             cipher.init(2, secretKey, ivSpec);
             return cipher.doFinal(data);
-        } catch (Exception var6) {
-            // var6.printStackTrace();
+        } catch (Exception e) {
+            // e.printStackTrace();
             return null;
         }
     }

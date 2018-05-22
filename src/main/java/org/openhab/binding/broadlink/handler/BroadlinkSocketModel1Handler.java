@@ -14,9 +14,9 @@ import org.eclipse.smarthome.core.thing.Thing;
 import org.eclipse.smarthome.core.types.Command;
 
 /**
-
-
  *
+ * 
+ * 
  * @author Cato Sognen - Initial contribution
  */
 public class BroadlinkSocketModel1Handler extends BroadlinkSocketHandler {
@@ -25,7 +25,7 @@ public class BroadlinkSocketModel1Handler extends BroadlinkSocketHandler {
     }
 
     @Override
-    public void handleCommand(ChannelUID channelUID, Command command) {
+    public void handleCommand(final ChannelUID channelUID, final Command command) {
         if (channelUID.getId().equals("powerOn")) {
             if (command == OnOffType.ON) {
                 this.setStatusOnDevice(1);
@@ -36,10 +36,10 @@ public class BroadlinkSocketModel1Handler extends BroadlinkSocketHandler {
 
     }
 
-    public void setStatusOnDevice(int state) {
-        byte[] payload = new byte[16];
+    public void setStatusOnDevice(final int state) {
+        final byte[] payload = new byte[16];
         payload[0] = (byte) state;
-        byte[] message = this.buildMessage((byte) 102, payload);
+        final byte[] message = this.buildMessage((byte) 102, payload);
         this.sendDatagram(message);
     }
 }

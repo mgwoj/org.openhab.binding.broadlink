@@ -14,7 +14,6 @@ import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.smarthome.core.thing.ThingTypeUID;
@@ -24,28 +23,26 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
-
-
  *
  * @author Cato Sognen - Initial contribution
  */
 public class BroadlinkSocket {
     private static final int BUFFER_LENGTH = 1024;
-    private static byte[] buffer = new byte[1024];
+    private static byte[] buffer = new byte[BUFFER_LENGTH];
     private static DatagramPacket datagramPacket;
     private static MulticastSocket socket;
     private static Thread socketReceiveThread;
-    private static List listeners;
+    private static List<BroadlinkSocketListener> listeners;
     private static Logger logger;
 
     static {
         datagramPacket = new DatagramPacket(buffer, buffer.length);
         socket = null;
-        listeners = new ArrayList();
+        listeners = new ArrayList<>();
         logger = LoggerFactory.getLogger(BroadlinkSocket.class);
     }
 
-    public static void registerListener(BroadlinkSocketListener listener) {
+    public static void registerListener(final BroadlinkSocketListener listener) {
         listeners.add(listener);
         if (socket == null) {
             setupSocket();
@@ -53,7 +50,7 @@ public class BroadlinkSocket {
 
     }
 
-    public static void unregisterListener(BroadlinkSocketListener listener) {
+    public static void unregisterListener(final BroadlinkSocketListener listener) {
         listeners.remove(listener);
         if (listeners.isEmpty() && socket != null) {
             closeSocket();
@@ -62,21 +59,20 @@ public class BroadlinkSocket {
     }
 
     private static void setupSocket() {
-        Class var0 = BroadlinkSocket.class;
         synchronized (BroadlinkSocket.class) {
             try {
                 socket = new MulticastSocket();
-            } catch (IOException var2) {
-                logger.error("Setup socket error '{}'.", var2.getMessage());
+            } catch (IOException e) {
+                logger.error("Setup socket error '{}'.", e.getMessage());
             }
 
             socketReceiveThread = new BroadlinkSocket.ReceiverThread((BroadlinkSocket.ReceiverThread) null);
             socketReceiveThread.start();
         }
+        // monitorexit(BroadlinkSocket.class)
     }
 
     private static void closeSocket() {
-        Class var0 = BroadlinkSocket.class;
         synchronized (BroadlinkSocket.class) {
             if (socketReceiveThread != null) {
                 socketReceiveThread.interrupt();
@@ -97,17 +93,16 @@ public class BroadlinkSocket {
 
     public static void sendMessage(byte[] message, String host, int port) {
         try {
-            DatagramPacket sendPacket = new DatagramPacket(message, message.length, InetAddress.getByName(host), port);
+            final DatagramPacket sendPacket = new DatagramPacket(message, message.length, InetAddress.getByName(host),
+                    port);
             socket.send(sendPacket);
-        } catch (IOException var4) {
-            logger.error("IO Error sending message: '{}'", var4.getMessage());
+        } catch (IOException e) {
+            logger.error("IO Error sending message: '{}'", e.getMessage());
         }
 
     }
 
     /**
-
-
      *
      * @author Cato Sognen - Initial contribution
      */
@@ -120,26 +115,24 @@ public class BroadlinkSocket {
             this.receiveData(BroadlinkSocket.socket, BroadlinkSocket.datagramPacket);
         }
 
-        private void receiveData(MulticastSocket socket, DatagramPacket dgram) {
+        private void receiveData(final MulticastSocket socket, final DatagramPacket dgram) {
             try {
                 while (true) {
                     socket.receive(dgram);
-                    Iterator var4 = (new ArrayList(BroadlinkSocket.listeners)).iterator();
-
-                    while (var4.hasNext()) {
-                        BroadlinkSocketListener listener = (BroadlinkSocketListener) var4.next();
-                        byte[] receivedPacket = dgram.getData();
-                        byte[] remoteMAC = Arrays.copyOfRange(receivedPacket, 58, 64);
-                        int model = Byte.toUnsignedInt(receivedPacket[52])
+                    for (final BroadlinkSocketListener listener : new ArrayList<BroadlinkSocketListener>(
+                            BroadlinkSocket.listeners)) {
+                        final byte[] receivedPacket = dgram.getData();
+                        final byte[] remoteMAC = Arrays.copyOfRange(receivedPacket, 58, 64);
+                        final int model = Byte.toUnsignedInt(receivedPacket[52])
                                 | Byte.toUnsignedInt(receivedPacket[53]) << 8;
-                        ThingTypeUID deviceType = ModelMapper.getThingType(model);
+                        final ThingTypeUID deviceType = ModelMapper.getThingType(model);
                         listener.onDataReceived(dgram.getAddress().getHostAddress(), dgram.getPort(),
                                 Hex.decodeMAC(remoteMAC), deviceType);
                     }
                 }
-            } catch (IOException var9) {
+            } catch (IOException e) {
                 if (!this.isInterrupted()) {
-                    BroadlinkSocket.logger.error("Error while receiving '{}'", var9);
+                    BroadlinkSocket.logger.error("Error while receiving '{}'", e);
                 }
 
                 BroadlinkSocket.logger.info("Receiver thread ended");

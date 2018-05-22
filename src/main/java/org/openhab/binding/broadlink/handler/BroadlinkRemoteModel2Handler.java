@@ -20,13 +20,11 @@ import org.openhab.binding.broadlink.internal.Hex;
 import org.openhab.binding.broadlink.internal.Utils;
 
 /**
-
-
  *
  * @author Cato Sognen - Initial contribution
  */
 public class BroadlinkRemoteModel2Handler extends BroadlinkRemoteHandler {
-    public BroadlinkRemoteModel2Handler(Thing thing) {
+    public BroadlinkRemoteModel2Handler(final Thing thing) {
         super(thing);
     }
 
@@ -44,20 +42,20 @@ public class BroadlinkRemoteModel2Handler extends BroadlinkRemoteHandler {
     }
 
     public boolean getStatusFromDevice() {
-        byte[] payload = new byte[16];
+        final byte[] payload = new byte[16];
         payload[0] = 1;
-        byte[] message = this.buildMessage((byte) 106, payload);
+        final byte[] message = this.buildMessage((byte) 106, payload);
         this.sendDatagram(message);
-        byte[] response = this.receiveDatagram();
+        final byte[] response = this.receiveDatagram();
         if (response != null) {
-            int error = response[34] | response[35] << 8;
+            final int error = response[34] | response[35] << 8;
             if (error == 0) {
-                IvParameterSpec ivSpec = new IvParameterSpec(Hex.convertHexToBytes(this.thingConfig.getIV()));
-                Map properties = this.editProperties();
-                byte[] decodedPayload = Utils.decrypt(Hex.fromHexString((String) properties.get("key")), ivSpec,
+                final IvParameterSpec ivSpec = new IvParameterSpec(Hex.convertHexToBytes(this.thingConfig.getIV()));
+                final Map<String, String> properties = this.editProperties();
+                final byte[] decodedPayload = Utils.decrypt(Hex.fromHexString(properties.get("key")), ivSpec,
                         Utils.slice(response, 56, 88));
                 if (decodedPayload != null) {
-                    float temperature = (float) ((decodedPayload[4] * 10 + decodedPayload[5]) / 10.0D);
+                    final float temperature = (float) ((decodedPayload[4] * 10 + decodedPayload[5]) / 10.0D);
                     this.updateState("temperature", new DecimalType(temperature));
                     return true;
                 } else {

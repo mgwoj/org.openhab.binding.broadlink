@@ -17,8 +17,11 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.eclipse.smarthome.config.discovery.DiscoveryService;
 import org.eclipse.smarthome.core.thing.Thing;
 import org.eclipse.smarthome.core.thing.ThingTypeUID;
+import org.eclipse.smarthome.core.thing.ThingUID;
 import org.eclipse.smarthome.core.thing.binding.BaseThingHandlerFactory;
 import org.eclipse.smarthome.core.thing.binding.ThingHandler;
+import org.eclipse.smarthome.core.thing.type.ChannelGroupType;
+import org.eclipse.smarthome.core.thing.type.ChannelType;
 import org.openhab.binding.broadlink.BroadlinkBindingConstants;
 import org.openhab.binding.broadlink.handler.BroadlinkA1Handler;
 import org.openhab.binding.broadlink.handler.BroadlinkControllerHandler;
@@ -34,16 +37,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
-
-
  *
  * @author Cato Sognen - Initial contribution
  */
 public class BroadlinkHandlerFactory extends BaseThingHandlerFactory {
     private final Logger logger = LoggerFactory.getLogger(BroadlinkHandlerFactory.class);
-    private Map discoveryServiceRegs = new HashMap();
-    private List channelTypes = new CopyOnWriteArrayList();
-    private List channelGroupTypes = new CopyOnWriteArrayList();
+    private Map<ThingUID, ServiceRegistration<?>> discoveryServiceRegs = new HashMap<>();
+    private List<ChannelType> channelTypes = new CopyOnWriteArrayList<>();
+    private List<ChannelGroupType> channelGroupTypes = new CopyOnWriteArrayList<>();
 
     @Override
     public boolean supportsThingType(ThingTypeUID thingTypeUID) {
@@ -52,7 +53,7 @@ public class BroadlinkHandlerFactory extends BaseThingHandlerFactory {
 
     @Override
     protected ThingHandler createHandler(Thing thing) {
-        ThingTypeUID thingTypeUID = thing.getThingTypeUID();
+        final ThingTypeUID thingTypeUID = thing.getThingTypeUID();
         if (this.logger.isDebugEnabled()) {
             this.logger.debug("Creating Thing handler for '{}'", thingTypeUID.getAsString());
         }
@@ -98,10 +99,9 @@ public class BroadlinkHandlerFactory extends BaseThingHandlerFactory {
     }
 
     @Override
-    protected synchronized void removeHandler(ThingHandler thingHandler) {
+    protected synchronized void removeHandler(final ThingHandler thingHandler) {
         if (thingHandler instanceof BroadlinkControllerHandler) {
-            ServiceRegistration serviceReg = (ServiceRegistration) this.discoveryServiceRegs
-                    .get(thingHandler.getThing().getUID());
+            final ServiceRegistration serviceReg = this.discoveryServiceRegs.get(thingHandler.getThing().getUID());
             if (serviceReg != null) {
                 serviceReg.unregister();
                 this.discoveryServiceRegs.remove(thingHandler.getThing().getUID());
@@ -111,8 +111,8 @@ public class BroadlinkHandlerFactory extends BaseThingHandlerFactory {
     }
 
     private synchronized void registerBroadlinkDeviceDiscoveryService(
-            BroadlinkControllerHandler broadlinkControllerHandler) {
-        BroadlinkDeviceDiscoveryService discoveryService = new BroadlinkDeviceDiscoveryService(
+            final BroadlinkControllerHandler broadlinkControllerHandler) {
+        final BroadlinkDeviceDiscoveryService discoveryService = new BroadlinkDeviceDiscoveryService(
                 broadlinkControllerHandler);
         this.discoveryServiceRegs.put(broadlinkControllerHandler.getThing().getUID(), this.bundleContext
                 .registerService(DiscoveryService.class.getName(), discoveryService, new Hashtable()));

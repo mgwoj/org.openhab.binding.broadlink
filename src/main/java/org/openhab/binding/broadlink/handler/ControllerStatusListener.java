@@ -11,11 +11,9 @@ package org.openhab.binding.broadlink.handler;
 import org.eclipse.smarthome.core.thing.ThingStatus;
 
 /**
-
-
  *
  * @author Cato Sognen - Initial contribution
  */
 public interface ControllerStatusListener {
-    void controllerStatusChanged(ThingStatus var1);
+    void controllerStatusChanged(final ThingStatus var1);
 }

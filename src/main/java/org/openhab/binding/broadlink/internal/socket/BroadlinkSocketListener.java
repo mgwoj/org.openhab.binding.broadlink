@@ -17,5 +17,5 @@ import org.eclipse.smarthome.core.thing.ThingTypeUID;
  * @author Cato Sognen - Initial contribution
  */
 public interface BroadlinkSocketListener {
-    void onDataReceived(String var1, int var2, String var3, ThingTypeUID var4);
+    void onDataReceived(final String p0, final int p1, final String p2, final ThingTypeUID p3);
 }

@@ -13,14 +13,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
-
-
  *
  * @author Cato Sognen - Initial contribution
  */
 public class BroadlinkDevicePIRHandler {
-   private final Logger logger = LoggerFactory.getLogger(BroadlinkDevicePIRHandler.class);
+    private final Logger logger = LoggerFactory.getLogger(BroadlinkDevicePIRHandler.class);
 
-   public BroadlinkDevicePIRHandler(final Thing thing) {
-   }
+    public BroadlinkDevicePIRHandler(final Thing thing) {
+    }
 }
